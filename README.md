@@ -23,3 +23,7 @@ This project is a website to match potential blood donors with those in need of 
 <p align="center">
   <img src="docs-assets/userflow-login.png"/>
 </p>
+
+<p align="center">
+  <img src="docs-assets/userflow-blood-request.png"/>
+</p>
