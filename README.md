@@ -12,11 +12,7 @@ This project is a website to match potential blood donors with those in need of 
 
 ## Mockups
 <p align="center">
-  <img src="docs-assets/page-home.png"/>
-</p>
-
-<p align="center">
-  <img src="docs-assets/page-join.png"/>
+  <img src="docs-assets/mockup.png"/>
 </p>
 
 ## Userflows
