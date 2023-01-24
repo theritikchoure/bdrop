@@ -1,0 +1,36 @@
+.home-container {
+    height: 100vh;
+    background-color: var(--main-bg-color);;
+    display: grid;
+    place-items: center;
+    padding: 50px 0;
+}
+
+.home-container h1 {
+    font-weight: 600;
+    font-size: 43px;
+    color: var(--main-light-font-color);
+}
+
+.home-container h2 {
+    font-size: 35px;
+    font-weight: 900;
+    color: var(--main-light-font-color);
+    text-align: center;
+}
+
+.logo-container {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 15px;
+}
+
+.home-container button {
+    background-color: var(--second-bg-color);
+    color: var(--main-bg-font-color);
+    font-weight: 600;
+    padding: 8px 25px;
+    border-radius: 5px;
+}

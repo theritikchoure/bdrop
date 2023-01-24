@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --main-bg-color: #FF2156;
+    --second-bg-color: #FFF;
+    --main-light-font-color: #FFF;
+    --main-bg-font-color: #FF2156;
+}
