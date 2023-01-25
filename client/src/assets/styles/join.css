@@ -1,0 +1,130 @@
+
+
+.join-container-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.join-container-col.left {
+    float: left;
+    width: 50%;
+    background-color: var(--main-bg-color);
+    padding-top: 175px;
+    /* padding-left: 290px; */
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.join-container-col.left h3{
+    font-weight: 600;
+    font-size: 25px;
+    color: var(--main-light-font-color);
+    margin-top: -371px;
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    width: 50%;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tablinks.active {
+    background-color: #ddd;
+}
+.logo-container {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 15px;
+}
+
+.join-container-col.right {
+    background-color: var(--second-bg-color);
+    height: 100vh;
+    float: right;
+    width: 50%;
+    padding: 175px
+}
+
+.login-form-container{
+    margin-top: 20px;
+}
+
+input#login_mobile {
+    width: 100%!important;
+    background-color: #f1f1f1!important;
+    height: 35px!important;
+    margin-top: 5px!important;
+    margin-bottom: 5px!important;
+}
+
+.login_otp_container {
+    margin-top: 5px!important;
+    margin-bottom: 5px!important;
+}
+.login_otp_input {
+    width: 3em!important;
+    text-align: center;
+    background-color: #f1f1f1;
+    margin: 7px;
+    height: 34px;
+}
+
+#login_submit_button {
+    width: 100%;
+    background-color: var(--main-bg-color);
+    padding: 5px;
+    color: var(--main-light-font-color);
+    margin-top: 25px;
+    border-radius: 5px;
+}
+
+#login_submit_button:hover {
+    background-color: var(--second-bg-color);
+    color: var(--main-bg-font-color);
+    border: 1px solid var(--main-bg-font-color);
+}
+
+@media (max-width: 767px) {
+    .join-container-col.left {
+        width: 100%;
+        height: 35vh;
+        padding-bottom: 49px;
+    }
+
+    .join-container-col.right {
+        width: 100%;
+        /* padding: 25px; */
+        padding: 45px 15px;
+        height: 0vh;
+    }
+
+    .logo-container {
+        margin-top: -179px;
+    }
+    
+    .join-container-col.left h3 {
+        margin-top: -20px;
+    }
+}

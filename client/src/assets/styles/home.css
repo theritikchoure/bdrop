@@ -27,7 +27,7 @@
     padding: 15px;
 }
 
-.home-container button {
+.home-container .join-button {
     background-color: var(--second-bg-color);
     color: var(--main-bg-font-color);
     font-weight: 600;

@@ -1,5 +1,7 @@
 import '../../assets/styles/home.css';
 import logo from '../../assets/images/bdrop-logo.png';
+import { Link } from "react-router-dom";
+
 function Home() {
   return (
     <div className="home-container">
@@ -11,9 +13,10 @@ function Home() {
 
         <h2>TAKE ACTION, MAKE A BLOOD DONATION</h2>
 
-        <button>Join - BDROP</button>
+        <Link to="/join" className='join-button'>Join - BDROP</Link>
     </div>
   );
 }
+
 
 export default Home;

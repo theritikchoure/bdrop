@@ -8,3 +8,9 @@
     --main-light-font-color: #FFF;
     --main-bg-font-color: #FF2156;
 }
+
+.validation_message {
+    font-size: 13px;
+    font-style: italic;
+    color: red;
+}
