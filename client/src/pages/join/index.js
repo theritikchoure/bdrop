@@ -3,17 +3,21 @@ import mobileSecurityIcon from '../../assets/images/mobile-security-icon.png';
 import { useState } from 'react';
 import OtpInput from 'react-otp-input';
 import { loginValidate } from '../../validations/login.validation';
+import { connect } from 'react-redux';
+import { generateOTP, verifyOTP } from '../../services/auth.service';
+import { isEmpty } from '../../helper/common';
+import { successToast, warningToast } from '../../components/toasterNotifications';
 
-function Join() {
+function Join(props) {
 
-  const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
+  const [formType, setFormType] = useState('generateotp');
+  const [otpDisabled, setOtpDisabled] = useState(true);
   const [buttonText, setButtonText] = useState('Request OTP');
   const [initialValue, setInitialValue] = useState({
-    user: 'patient',
+    user_type: 'patient',
     mobile: '',
     otp: '',
-  })
+  });
   const [error, setError] = useState({
 
   })
@@ -31,19 +35,76 @@ function Join() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let error = loginValidate({user: initialValue.user, mobile: initialValue.mobile})
-    if(error) {
+    if(formType === 'generateotp') {
+      generateOtp(e);
+      return;
+    } else if(formType === 'verifyotp') {
+      verifyOtp(e);
+      return;
+    }
+
+    return;
+  }
+
+  const generateOtp = async (e) => {
+    try {
+      let error = loginValidate({user_type: initialValue.user_type, mobile: initialValue.mobile})
+      if(!isEmpty(error)) {
         console.log(error);
         setError(error);
         return;
-    }
+      }
 
-    setError({});
-    
-  }
+      setError({});
+
+      let res = await props.generateOTP({user_type: initialValue.user_type, mobile: initialValue.mobile});
+      setOtpDisabled(false);
+      setInitialValue({
+        user_type: initialValue.user_type,
+        mobile: initialValue.mobile,
+        otp: '',
+      });
+      setFormType('verifyotp');
+      setButtonText('Submit OTP');
+      successToast(res.message);
+      return true;
+    } catch (error) {
+      console.log(error);
+      warningToast(error.message || error);
+    }
+  };
+
+  const verifyOtp = async (e) => {
+    try {
+      console.log('verify otp')
+      let error = loginValidate({user_type: initialValue.user_type, mobile: initialValue.mobile, otp: initialValue.otp}, true);
+      console.log(error);
+      if(!isEmpty(error)) {
+        setError(error);
+        return;
+      }
+
+      setError({});
+
+      let res = await props.verifyOTP({user_type: initialValue.user_type, mobile: initialValue.mobile, otp: initialValue.otp});
+      setOtpDisabled(false);
+      setInitialValue({
+        user_type: 'patient',
+        mobile: '',
+        otp: '',
+      });
+      setFormType('generateotp');
+      setButtonText('Request OTP')
+      successToast(res.message);
+      return true;
+    } catch (error) {
+      console.log(error);
+      warningToast(error.message || error);
+    }
+  };
 
   return (
     <div className="join-container">
@@ -57,10 +118,10 @@ function Join() {
             <div className='join-container-col right'>
                 <div className='login-form-container'>
                     <div className="tab">
-                        <button className={initialValue.user === 'patient' ? 'tablinks active' : 'tablinks'}
-                        onClick={() => onChangeFormData('user', 'patient')}>Patient</button>
-                        <button className={initialValue.user === 'donor' ? 'tablinks active' : 'tablinks'}
-                        onClick={() => onChangeFormData('user', 'donor')}>Donor</button>
+                        <button className={initialValue.user_type === 'patient' ? 'tablinks active' : 'tablinks'}
+                        onClick={() => onChangeFormData('user_type', 'patient')}>Patient</button>
+                        <button className={initialValue.user_type === 'donor' ? 'tablinks active' : 'tablinks'}
+                        onClick={() => onChangeFormData('user_type', 'donor')}>Donor</button>
                     </div>
 
                     <form onSubmit={handleSubmit}>
@@ -68,6 +129,7 @@ function Join() {
                         <input type='text' id="login_mobile"
                             value={initialValue.mobile}
                             onChange={(e) => onChangeFormData('mobile', e.target.value)}
+                            disabled={formType === 'verifyotp'}
                         />
                         {error?.mobile && <span className='validation_message'>{error?.mobile}</span>}
                         <br />
@@ -80,10 +142,11 @@ function Join() {
                             separator={<span>-</span>}
                             containerStyle={'login_otp_container'}
                             inputStyle={'login_otp_input'}
-                            isDisabled={true}
+                            isDisabled={formType === 'generateotp'}
                         />
+                        {error?.otp && <span className='validation_message'>{error?.otp}</span>}
 
-                        <button type='submit' id='login_submit_button'>Join - BDROP </button>
+                        <button type='submit' id='login_submit_button'>{buttonText}</button>
                     </form>
                 </div>
             </div>
@@ -92,4 +155,6 @@ function Join() {
   );
 }
 
-export default Join;
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, { generateOTP, verifyOTP })(Join);

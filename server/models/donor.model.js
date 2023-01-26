@@ -16,12 +16,11 @@ const donorSchema = new mongoose.Schema({
         default: null,
         required: false,
     },
-    email: {
-        type: String,
-        unique: true,
-        default: null,
-        required: false,
-    },
+    // email: {
+    //     type: String,
+    //     default: null,
+    //     required: false,
+    // },
     mobile: {
         type: Number,
         required: [true, "Please Enter Your Mobile Number"],

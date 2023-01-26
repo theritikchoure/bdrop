@@ -1,6 +1,6 @@
 import { isEmpty } from "../helper/common";
 
-export const loginValidate = (payload) => {
+export const loginValidate = (payload, otpValidate = false) => {
     console.log(payload);
     let errors = {};
 
@@ -8,8 +8,12 @@ export const loginValidate = (payload) => {
         errors.mobile = 'Mobile number must be at least 10 characters';
     }
 
-    if(payload?.otp && isEmpty(payload.otp) /* || !isValidPassword(payload.password)*/) {
-        errors.otp = 'OTP is required';
+    if(otpValidate) {
+        if(isEmpty(payload.otp)) {
+            errors.otp = 'OTP is required';
+        } else if(String(payload.otp).length !== 6) {
+            errors.otp = 'OTP must be 6 digits';
+        }
     }  
 
     return errors;

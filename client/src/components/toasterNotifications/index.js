@@ -15,6 +15,7 @@ import { isEmpty } from '../../helper/common';
 // }
 
 export const successToast = (message='', options={}) => {
+    console.log(message);
     if(isEmpty(message)) return;
     return toast.success(message, options);
 };

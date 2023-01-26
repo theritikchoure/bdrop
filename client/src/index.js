@@ -3,19 +3,17 @@ import { createRoot } from 'react-dom/client';
 import './global.css';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from 'react-redux';
+import configureStore from './config/configureStore.js';
 
+const store = configureStore();
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
-    <BrowserRouter>
-        <App tab="home" />
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <App tab="home" />
+        </BrowserRouter>
+    </Provider>
 );
-
-// ReactDOM.render(
-//   <BrowserRouter>
-//     <App />
-//   </BrowserRouter>,
-//   document.getElementById("root")
-// );
