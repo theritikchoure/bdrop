@@ -7,9 +7,11 @@ import { connect } from 'react-redux';
 import { generateOTP, verifyOTP } from '../../services/auth.service';
 import { isEmpty } from '../../helper/common';
 import { successToast, warningToast } from '../../components/toasterNotifications';
+import { useNavigate } from 'react-router-dom';
 
 function Join(props) {
 
+  const navigate = useNavigate();
   const [formType, setFormType] = useState('generateotp');
   const [otpDisabled, setOtpDisabled] = useState(true);
   const [buttonText, setButtonText] = useState('Request OTP');
@@ -99,6 +101,7 @@ function Join(props) {
       setFormType('generateotp');
       setButtonText('Request OTP')
       successToast(res.message);
+      navigate('/');
       return true;
     } catch (error) {
       console.log(error);
