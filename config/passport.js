@@ -27,9 +27,9 @@ const jwtLogin = new JwtStrategy({
   console.log("Line 26", payload);
   let user
   if( payload.user.user_type === 'patient') {
-    user = await Patient.findById(payload.user._id);
+    user = await Patient.findById(payload.user.id);
   } else {
-    user = await Donor.findById(payload.user._id);
+    user = await Donor.findById(payload.user.id);
   }
   if (!user) {
     return done(null, false);

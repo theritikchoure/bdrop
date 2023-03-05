@@ -12,6 +12,7 @@ router.post('/generateotp', asyncHandler(generateOTP)); // Done
 router.post('/verifyotp', asyncHandler(verifyOTP)); // Done
 router.get("/user-details",passport.authenticate("jwt", { session: false }), asyncHandler(userDetails));
 router.post('/logout', passport.authenticate('jwt', { session: false }), asyncHandler(logout)); 
+router.get('/login-activity', passport.authenticate('jwt', { session: false }), asyncHandler(loginActivity)); 
 
 // router.get('/updateprofile', passport.authenticate('jwt', { session: false }), updateProfile);
 // ------------------ Auth Related Routes (End) ------------------
@@ -32,7 +33,6 @@ async function generateOTP(req, res, next) {
 // Route for verify OTP for Login
 async function verifyOTP(req, res, next) {
   try{
-
     // Details for LoginActivity
     var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress 
     let agent = req.headers['user-agent'];
@@ -67,6 +67,17 @@ async function logout(req, res, next) {
     if (response) return createResponse(res, 200, resMsg.LOGOUT, response);
     else
       return createError(res, 400, { message: resMsg.BAD_REQUEST });
+  } catch (e) {
+    return createError(res, 400, e);
+  }
+}
+
+async function loginActivity(req, res, next) {
+  try {
+    let response = await authCtrl.getLoginActivity(req);
+    if (response) return createResponse(res, 200, resMsg.SUCCESS_FETCH, response);
+    else
+      return createError(res, 400, { message: resMsg.NO_DATA_FOUND });
   } catch (e) {
     return createError(res, 400, e);
   }

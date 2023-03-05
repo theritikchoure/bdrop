@@ -10,7 +10,7 @@ const schema = require('../utils/validationSchema.js');
 const { handleControllerError } = require('../middleware/response-handler');
 
 module.exports = {
-  generateOtp, verifyOTP, userDetails, logout
+  generateOtp, verifyOTP, userDetails, updateProfile, logout, getLoginActivity
 }
 
 async function createUser(req) {
@@ -71,6 +71,8 @@ async function verifyOTP(req) {
       user = await Donor.findOne({ mobile: req.body.mobile });
     }
 
+    console.log(user);
+
     if(!user) return false;
 
     let loginActivityDetails;
@@ -78,17 +80,17 @@ async function verifyOTP(req) {
     if(user.mobileOtpExpire > Date.now() && user.mobileOtp === otp){
       console.log(user)
       loginActivityDetails = { user_id: user._id, user_type: user.user_type, body: req.body, status: 'success', };
-      loginActivityDetails = await loginActivity(loginActivityDetails);
+      loginActivityDetails = await storeloginActivity(loginActivityDetails);
       user.mobileOtp = "";
       user.mobileOtpExpire = "";
       await user.save();
-      token = await generateToken(user);
+      token = await generateToken(user.toAuthJSON());
       
       return { user, token };
     } else
     {
       loginActivityDetails = { user_id: user._id, user_type: user.user_type, body: req.body, status: 'failed', };
-      loginActivityDetails = await loginActivity(loginActivityDetails);
+      loginActivityDetails = await storeloginActivity(loginActivityDetails);
 
       return false;
     }
@@ -101,7 +103,7 @@ async function generateToken(user) {
   return jwt.sign({user}, config.jwtSecret, { expiresIn: config.jwtExpire });
 }
 
-async function loginActivity(req) {
+async function storeloginActivity(req) {
   const { user_id, user_type } = req;
   const { agent, ip, latitude, longitude } = req.body;
   const login_status = req.status;
@@ -112,11 +114,44 @@ async function loginActivity(req) {
 
 async function userDetails(req) {
   try {
-   return req.user;
+   if(req.user.user_type === 'donor') {
+    return await Donor.findById(req.user.id);
+   } else if(req.user.user_type === 'patient') {
+    return await Patient.findById(req.user.id);
+   }
   } catch (e) {
     throw handleControllerError(e);
   }
 }
+
+async function updateProfile(req) {
+  try {
+   if(req.user.user_type === 'donor') {
+    return updateDonorProfile(req);
+   } else if(req.user.user_type === 'patient') {
+    return updatePatientProfile(req);
+   }
+  } catch (e) {
+    throw handleControllerError(e);
+  }
+}
+
+async function updateDonorProfile(req) {
+  try {
+    
+  } catch (e) {
+    throw handleControllerError(e);
+  }
+}
+
+async function updatePatientProfile(req) {
+  try {
+    
+  } catch (e) {
+    throw handleControllerError(e);
+  }
+}
+
 // Logout API Function
 async function logout(req) {
   if(req.user)
@@ -131,4 +166,12 @@ async function logout(req) {
     return true;
   } else
     return false;
+}
+
+async function getLoginActivity(req) {
+  try {
+    return await LoginActivityModel.find({user_id: req.user.id || req.user._id}).sort({created_at: -1});
+  } catch (e) {
+    throw handleControllerError(e);
+  }
 }

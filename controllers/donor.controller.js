@@ -47,7 +47,7 @@ async function updateDonor(req) {
 }
 
 async function deleteSingleDonor(req) {
-  isDonor = await Donor.findById(req.params.donorId);
+  let isDonor = await Donor.findById(req.params.donorId);
   if(!isDonor) return false
   await isDonor.remove();
   return true;

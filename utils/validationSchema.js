@@ -15,7 +15,7 @@ const verifyOtpSchema = Joi.object({
     ip: Joi.string().optional(),
 });
 
-const updateMeSchema = Joi.object({
+const updateDonorProfile = Joi.object({
     name: Joi.string().required(),
     bloodgroup: Joi.string().required(),
     email: Joi.string().email(),
@@ -29,6 +29,6 @@ const updateMeSchema = Joi.object({
 });
 
 module.exports = {
-    loginOtpSchema, verifyOtpSchema, updateMeSchema
+    loginOtpSchema, verifyOtpSchema, updateDonorProfile
 }
   

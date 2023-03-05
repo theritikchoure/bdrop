@@ -11,16 +11,12 @@ const donorSchema = new mongoose.Schema({
         default: null,
         required: false,
     },
-    bloodgroup:{
+    blood_group:{
         type: String,
         default: null,
         required: false,
+        enum: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-', null]
     },
-    // email: {
-    //     type: String,
-    //     default: null,
-    //     required: false,
-    // },
     mobile: {
         type: Number,
         required: [true, "Please Enter Your Mobile Number"],
@@ -48,7 +44,7 @@ const donorSchema = new mongoose.Schema({
         default: null,
         required: false,
     },
-    zipcode: {
+    zip_code: {
         type: String,
         default: null,
         required: false,
@@ -74,11 +70,11 @@ const donorSchema = new mongoose.Schema({
         type: String,
         default: "available"
     },
-    donatedAt: {
-        type: Date,
+    donated_at: {
+        type: String,
         default: null
     },
-    donatedTo: [
+    donated_tp: [
         {
             patient: {
                 default: null,
@@ -134,12 +130,29 @@ const donorSchema = new mongoose.Schema({
             required: false,
         },
         coordinates: []
-    }
+    },
+
+    is_profile_completed: {
+        type: Boolean,
+        default: false,
+        required: false,
+    },
 })
 
 donorSchema.pre("save", async function(next){
    
 });
+
+// JWT Token
+donorSchema.methods.toAuthJSON = function (){
+    return {
+        id: this._id,
+        name: this.name,
+        status: this.status,
+        user_type: this.user_type,
+        is_profile_completed: this.is_profile_completed,
+    }
+};
 
 // JWT Token
 donorSchema.methods.getJWTToken = function (){
